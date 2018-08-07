@@ -2,15 +2,10 @@ defmodule HolidayAppWeb.AuthControllerTest do
   use HolidayAppWeb.ConnCase
 
   alias HolidayAppWeb.AuthController
-  alias HolidayApp.Users.User
 
   setup do
     conn = build_conn_with_session()
-
-    user =
-      build(:user)
-      |> encrypt_password("dummyPassword")
-      |> insert()
+    user = insert_user_with_password("dummyPassword")
 
     {:ok, conn: conn, user: user}
   end
@@ -59,11 +54,5 @@ defmodule HolidayAppWeb.AuthControllerTest do
       assert redirected_to(conn) == auth_path(conn, :new)
       assert get_flash(conn, :error) == "Error message"
     end
-  end
-
-  defp encrypt_password(user, password) do
-    user
-    |> User.create_changeset(%{password: password, password_confirmation: password})
-    |> Ecto.Changeset.apply_changes()
   end
 end
