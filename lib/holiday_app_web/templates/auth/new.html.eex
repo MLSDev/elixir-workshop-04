@@ -17,3 +17,5 @@
 <% end %>
 
 <a href="/auth/google">Login with Google</a>
+<br/>
+<a href="/auth/facebook">Login with Facebook</a>
