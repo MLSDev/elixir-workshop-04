@@ -7,6 +7,9 @@ defmodule HolidayApp.Users.User do
     field :email, :string
     field :password_hash, :string
 
+    field :uid, :string
+    field :provider, :string, default: "identity"
+
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
 
