@@ -22,9 +22,19 @@ defmodule HolidayApp.Users do
   Returns `{:ok, user}` or `{:error, message}`.
   Note that the error message is meant to be used for logging purposes only; it should not be passed on to the end user.
   """
-  def find_by_email_and_password(email, password) do
+  def find_by_email_and_password(email, password) when is_binary(email) and is_binary(password) do
     User
     |> Repo.get_by(email: email)
-    |> Comeonin.Argon2.check_pass(password)
+    |> verify_password(password)
+  end
+
+  def find_by_email_and_password(_, _), do: {:error, "Invalid credentials"}
+
+  defp verify_password(user, password) do
+    if user && user.password_hash do
+      Comeonin.Argon2.check_pass(user, password)
+    else
+      {:error, "Invalid credentials"}
+    end
   end
 end

@@ -20,7 +20,7 @@ defmodule HolidayApp.UsersTest do
     end
   end
 
-  describe "get_by_email_and_password/2" do
+  describe "find_by_email_and_password/2" do
     setup do
       user =
         %User{}
@@ -39,6 +39,10 @@ defmodule HolidayApp.UsersTest do
     test "returns {:error, reason} on invalid credentials", %{user: user} do
       assert {:error, reason} = Users.find_by_email_and_password(user.email, "password")
       assert is_binary(reason)
+    end
+
+    test "returns {:error, reason} on empty credentials" do
+      assert {:error, _reason} = Users.find_by_email_and_password(nil, nil)
     end
   end
 end
