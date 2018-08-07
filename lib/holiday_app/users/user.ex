@@ -50,7 +50,7 @@ defmodule HolidayApp.Users.User do
     struct
     |> cast(attrs, @changeable_fields)
     |> unique_constraint(:uid)
-    |> validate_inclusion(:provider, ["identity", "google"])
+    |> validate_inclusion(:provider, ["identity", "google", "facebook"])
     |> verify_password()
   end
 
