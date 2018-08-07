@@ -32,7 +32,8 @@ defmodule HolidayApp.Mixfile do
         :logger,
         :runtime_tools,
         :timex,
-        :ueberauth_identity
+        :ueberauth_identity,
+        :ueberauth_google
       ]
     ]
   end
@@ -61,7 +62,8 @@ defmodule HolidayApp.Mixfile do
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.3"},
       {:guardian, "~> 1.0"},
-      {:ueberauth_identity, "~> 0.2"}
+      {:ueberauth_identity, "~> 0.2"},
+      {:ueberauth_google, "~> 0.7"}
     ]
   end
 
