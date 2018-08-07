@@ -5,6 +5,10 @@
     </span>
     |
     <span>
+      <%= link "Users", to: user_path(@conn, :index)%>
+    </span>
+    |
+    <span>
       <%= link "Logout", to: auth_path(@conn, :logout), method: :delete %>
     </span>
   <% else %>

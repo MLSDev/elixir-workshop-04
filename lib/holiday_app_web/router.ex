@@ -30,5 +30,6 @@ defmodule HolidayAppWeb.Router do
 
     delete "/auth/logout", AuthController, :logout
     resources "/holidays", HolidayController
+    resources "/users", UserController, only: [:index, :show]
   end
 end
