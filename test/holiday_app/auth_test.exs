@@ -18,9 +18,17 @@ defmodule HolidayApp.AuthTest do
   def auth_struct(:google, email, uid) do
     %Ueberauth.Auth{
       credentials: %Ueberauth.Auth.Credentials{},
-      extra: %Ueberauth.Auth.Extra{},
+      extra: %Ueberauth.Auth.Extra{
+        raw_info: %{
+          user: %{"hd" => "domain.com"}
+        }
+      },
       info: %Ueberauth.Auth.Info{
         email: email,
+        image: "https://xyz.google.com/1234/image.jpg",
+        name: "Dick Mountain",
+        first_name: "Dick",
+        last_name: "Mountain"
       },
       provider: :google,
       strategy: Ueberauth.Strategy.Google,

@@ -10,6 +10,10 @@ defmodule HolidayApp.Users.User do
     field :uid, :string
     field :provider, :string, default: "identity"
 
+    field :name, :string
+    field :photo_url, :string, size: 2048
+    field :hosted_domain, :string
+
     field :password, :string, virtual: true
     field :password_confirmation, :string, virtual: true
 
@@ -23,7 +27,10 @@ defmodule HolidayApp.Users.User do
     :uid,
     :provider,
     :password,
-    :password_confirmation
+    :password_confirmation,
+    :name,
+    :photo_url,
+    :hosted_domain
   ]
 
   @doc false
@@ -39,10 +46,12 @@ defmodule HolidayApp.Users.User do
 
   def create_changeset(struct, attrs) do
     struct
-    |> cast(attrs, @required_fields)
+    |> cast(attrs, @required_fields ++ [:name, :photo_url, :hosted_domain])
     |> validate_required(@required_fields)
     |> unique_constraint(:uid)
     |> validate_email(:email)
+    |> validate_url(:photo_url)
+    |> validate_url(:hosted_domain)
   end
 
   @doc false
@@ -52,12 +61,19 @@ defmodule HolidayApp.Users.User do
     |> unique_constraint(:uid)
     |> validate_inclusion(:provider, ["identity", "google", "facebook"])
     |> verify_password()
+    |> validate_url(:hosted_domain)
+    |> validate_url(:photo_url)
   end
 
   defp validate_email(changeset, field) do
     changeset
     |> validate_format(field, ~r/\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i)
     |> unique_constraint(field)
+  end
+
+  defp validate_url(changeset, field) do
+    regex = ~r/(?:https?:\/\/)?(?:[\w]+\.)([a-zA-Z\.]{2,6})([\/\w\.-]*)*\/?/i
+    validate_format(changeset, field, regex)
   end
 
   defp verify_password(changeset) do

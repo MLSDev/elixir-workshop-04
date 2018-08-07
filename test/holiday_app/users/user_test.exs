@@ -104,6 +104,18 @@ defmodule HolidayApp.Users.UserTest do
       assert {:error, changeset} = User.create_changeset(%User{}, attrs) |> Repo.insert()
       assert "has already been taken" in errors_on(changeset).uid
     end
+
+    test "validates hosted_domain, if given" do
+      attrs = params_for(:google_user, %{hosted_domain: "invalid/url"})
+      changeset = User.create_changeset(%User{}, attrs)
+      assert changeset.errors[:hosted_domain]
+    end
+
+    test "validates photo_url, if given" do
+      attrs = params_for(:google_user, %{photo_url: "invalid/url"})
+      changeset = User.create_changeset(%User{}, attrs)
+      assert changeset.errors[:photo_url]
+    end
   end
 
   describe "changeset/1 (used for updates)" do
