@@ -7,6 +7,7 @@ Internal MLSDev Elixir Workshop #04 - Authentication, part 2
 
 * Clone project
 * `mix deps.get`
+* Setup `.env` with auth providers credentials (see `.env.example` for reference)
 * Setup `config/*.exs` files (pay attention to secret config examples)
 * `mix ecto.setup` # create, migrate and seed database
 * `mix test`
