@@ -22,17 +22,19 @@ defmodule HolidayAppWeb.AuthControllerTest do
     end
   end
 
-  describe "login" do
+  describe "callback" do
     test "logs user in", %{conn: conn, user: user} do
-      conn = post conn, auth_path(conn, :login, email: user.email, password: "dummyPassword")
+      conn = post conn, auth_path(conn, :callback, %{
+        "email": user.email, "password": "dummyPassword"})
       assert redirected_to(conn) == "/"
       assert get_flash(conn, :info) =~  "You have logged in"
     end
 
-    test "denies on wrong password and renders login form", %{conn: conn, user: user} do
-      conn = post conn, auth_path(conn, :login, email: user.email, password: "wrong")
+    test "denies on wrong password and renders login form again", %{conn: conn, user: user} do
+      conn = post conn, auth_path(conn, :callback, %{
+        "email": user.email, "password": "wrong"})
       assert redirected_to(conn) == auth_path(conn, :new)
-      assert get_flash(conn, :error) =~  "Invalid email/password combination"
+      assert get_flash(conn, :error) =~ "Authentication failed"
     end
   end
 

@@ -14,9 +14,15 @@ defmodule HolidayAppWeb.Router do
     pipe_through :browser
 
     get "/", HomeController, :index
+  end
 
-    get "/auth/new", AuthController, :new
-    post "/auth/login", AuthController, :login
+  scope "/auth", HolidayAppWeb do
+    pipe_through :browser
+
+    get "/new", AuthController, :new
+    get "/:provider", AuthController, :request
+    post "/identity/callback", AuthController, :callback
+    get "/:provider/callback", AuthController, :callback
   end
 
   scope "/", HolidayAppWeb do

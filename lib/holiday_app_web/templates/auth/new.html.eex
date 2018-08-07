@@ -1,6 +1,6 @@
 <h2>Login</h2>
 
-<%= form_for @conn, auth_path(@conn, :login), [], fn f -> %>
+<%= form_for @conn, "/auth/identity/callback", [method: "post"], fn f -> %>
   <div class="form-group">
     <%= label f, "Email:", class: "control-label" %>
     <%= email_input f, :email, class: "form-control" %>

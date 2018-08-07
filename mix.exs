@@ -28,7 +28,12 @@ defmodule HolidayApp.Mixfile do
   def application do
     [
       mod: {HolidayApp.Application, []},
-      extra_applications: [:logger, :runtime_tools, :timex]
+      extra_applications: [
+        :logger,
+        :runtime_tools,
+        :timex,
+        :ueberauth_identity
+      ]
     ]
   end
 
@@ -55,7 +60,8 @@ defmodule HolidayApp.Mixfile do
       {:ex_doc, "~> 0.18", only: :dev, runtime: false},
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.3"},
-      {:guardian, "~> 1.0"}
+      {:guardian, "~> 1.0"},
+      {:ueberauth_identity, "~> 0.2"}
     ]
   end
 

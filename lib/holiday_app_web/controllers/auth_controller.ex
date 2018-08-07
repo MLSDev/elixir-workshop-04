@@ -3,11 +3,16 @@ defmodule HolidayAppWeb.AuthController do
 
   alias HolidayApp.Users
 
+  plug Ueberauth
+
   def new(conn, _params) do
     render(conn, :new)
   end
 
-  def login(conn, %{"email" => email, "password" => password}) do
+  def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
+    email = auth.info.email
+    password = auth.credentials.other.password
+
     case Users.find_by_email_and_password(email, password) do
       {:ok, user} ->
         conn
@@ -15,8 +20,12 @@ defmodule HolidayAppWeb.AuthController do
         |> put_flash(:info, "You have logged in!")
         |> redirect(to: "/")
       {:error, _reason} ->
-        auth_error(conn, {:unauthorized, "Invalid email/password combination"}, [])
+        auth_error(conn, {:unauthorized, "Authentication failed"}, [])
     end
+  end
+
+  def callback(%{assigns: %{ueberauth_failure: _failure}} = conn, _params) do
+    auth_error(conn, {:unauthorized, "Authentication failed"}, [])
   end
 
   def logout(conn, _params) do
