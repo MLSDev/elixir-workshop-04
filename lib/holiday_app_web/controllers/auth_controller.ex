@@ -1,7 +1,7 @@
 defmodule HolidayAppWeb.AuthController do
   use HolidayAppWeb, :controller
 
-  alias HolidayApp.Users
+  alias HolidayApp.Auth
 
   plug Ueberauth
 
@@ -10,10 +10,7 @@ defmodule HolidayAppWeb.AuthController do
   end
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
-    email = auth.info.email
-    password = auth.credentials.other.password
-
-    case Users.find_by_email_and_password(email, password) do
+    case Auth.authenticate(auth) do
       {:ok, user} ->
         conn
         |> HolidayAppWeb.Guardian.Plug.sign_in(user)

@@ -24,11 +24,26 @@ defmodule HolidayApp.Factory do
     }
   end
 
+  def insert_user_with_password(password) do
+    build(:user)
+    |> encrypt_password(password)
+    |> insert()
+  end
+
   defp random_date do
     day = Enum.random(1..28)
     month = Enum.random(1..12)
     year = Enum.random(2009..2099)
     {:ok, date} = Date.new(year, month, day)
     date
+  end
+
+  defp encrypt_password(user, password) do
+    user
+    |> User.create_changeset(%{
+        password: password,
+        password_confirmation: password
+      })
+    |> Ecto.Changeset.apply_changes()
   end
 end
