@@ -16,11 +16,28 @@ defmodule HolidayApp.Factory do
     %{holiday_factory() | kind: "workday"}
   end
 
+  defp random_date do
+    day = Enum.random(1..28)
+    month = Enum.random(1..12)
+    year = Enum.random(2009..2099)
+    {:ok, date} = Date.new(year, month, day)
+    date
+  end
+
   def user_factory do
     %User{
+      provider: "identity",
       email: sequence(:email, &"email#{&1}@domain.com"),
       password: "P4$$w0rd",
       password_confirmation: "P4$$w0rd"
+    }
+  end
+
+  def google_user_factory do
+    %User{
+      provider: "google",
+      email: sequence(:email, &"email-#{&1}@domain.com"),
+      uid: sequence(:uid, &"abc-#{&1}")
     }
   end
 
@@ -30,17 +47,10 @@ defmodule HolidayApp.Factory do
     |> insert()
   end
 
-  defp random_date do
-    day = Enum.random(1..28)
-    month = Enum.random(1..12)
-    year = Enum.random(2009..2099)
-    {:ok, date} = Date.new(year, month, day)
-    date
-  end
-
   defp encrypt_password(user, password) do
     user
     |> User.create_changeset(%{
+        provider: "identity",
         password: password,
         password_confirmation: password
       })

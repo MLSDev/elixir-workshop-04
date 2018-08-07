@@ -84,4 +84,33 @@ defmodule HolidayApp.Users.UserTest do
       assert Comeonin.Argon2.checkpw("P4$$w0rd", hash)
     end
   end
+
+  describe "create_changeset/2 for non-identity provider" do
+    test "valid attributes" do
+      attrs = params_for(:google_user)
+      changeset = User.create_changeset(%User{}, attrs)
+      assert changeset.valid?
+    end
+
+    test "requires uid" do
+      attrs = params_for(:google_user, %{uid: nil})
+      changeset = User.create_changeset(%User{}, attrs)
+      assert changeset.errors[:uid]
+    end
+
+    test "validates uid uniqueness" do
+      other_user = insert(:google_user, %{uid: "1234567890987654321"})
+      attrs = params_for(:google_user, %{uid: other_user.uid})
+      assert {:error, changeset} = User.create_changeset(%User{}, attrs) |> Repo.insert()
+      assert "has already been taken" in errors_on(changeset).uid
+    end
+  end
+
+  describe "changeset/1 (used for updates)" do
+    test "valid attributes" do
+      attrs = params_for(:user)
+      changeset = User.changeset(%User{}, attrs)
+      assert changeset.valid?
+    end
+  end
 end
