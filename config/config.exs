@@ -28,7 +28,8 @@ config :ueberauth, Ueberauth,
       callback_methods: ["POST"]
     ]},
     google: {Ueberauth.Strategy.Google, []},
-    facebook: {Ueberauth.Strategy.Facebook, []}
+    facebook: {Ueberauth.Strategy.Facebook, []},
+    github: {Ueberauth.Strategy.Github, [default_scope: "read:user,user:email"]}
   ]
 
 config :ueberauth, Ueberauth.Strategy.Google.OAuth,
@@ -38,6 +39,10 @@ config :ueberauth, Ueberauth.Strategy.Google.OAuth,
 config :ueberauth, Ueberauth.Strategy.Facebook.OAuth,
   client_id: System.get_env("FACEBOOK_APP_ID"),
   client_secret: System.get_env("FACEBOOK_APP_SECRET")
+
+config :ueberauth, Ueberauth.Strategy.Github.OAuth,
+  client_id: System.get_env("GITHUB_CLIENT_ID"),
+  client_secret: System.get_env("GITHUB_CLIENT_SECRET")
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

@@ -34,7 +34,8 @@ defmodule HolidayApp.Mixfile do
         :timex,
         :ueberauth_identity,
         :ueberauth_google,
-        :ueberauth_facebook
+        :ueberauth_facebook,
+        :ueberauth_github
       ]
     ]
   end
@@ -65,7 +66,8 @@ defmodule HolidayApp.Mixfile do
       {:guardian, "~> 1.0"},
       {:ueberauth_identity, "~> 0.2"},
       {:ueberauth_google, "~> 0.7"},
-      {:ueberauth_facebook, "~> 0.7"}
+      {:ueberauth_facebook, "~> 0.7"},
+      {:ueberauth_github, "~> 0.7"}
     ]
   end
 
