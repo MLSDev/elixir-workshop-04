@@ -25,7 +25,7 @@ defmodule HolidayApp.Auth do
   defp parse_auth(%Ueberauth.Auth{} = auth) do
     %{
       provider: to_string(auth.provider),
-      uid: auth.uid,
+      uid: to_string(auth.uid),
       email: auth.info.email,
       name: parse_name(auth),
       photo_url: parse_photo_url(auth),
@@ -51,7 +51,7 @@ defmodule HolidayApp.Auth do
   defp parse_photo_url(%Ueberauth.Auth{info: %{urls: %{avatar_url: image}}}), do: image
   # default case if nothing matches
   defp parse_photo_url(%Ueberauth.Auth{} = auth) do
-    Logger.warn auth.provider <> " needs to find a photo URL!"
+    Logger.warn to_string(auth.provider) <> " needs to find a photo URL!"
     Logger.debug(Poison.encode!(auth))
     nil
   end
